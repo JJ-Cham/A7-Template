@@ -11,9 +11,9 @@ in your work, please indicate the status of each item
 
 Assignment Points:
 
-_____ 1 pt: Loads and stores dictionary
+___**YES**__ 1 pt: Loads and stores dictionary
 
-_____ 1 pt: Implements containsWord method as specified
+_**YES**____ 1 pt: Implements containsWord method as specified
 
 _____ 5 pts: Implements nearMisses method as specified, composed of:
 

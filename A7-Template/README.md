@@ -13,3 +13,5 @@ Any references used besides JavaDoc and course materials:
 ## Assignment Reflection
 
 Please reflect on your experience with this assignment. What was most challenging? What was most interesting?
+
+The most challenging thing was writing the nearmisses method because I had to think about how to best implement each sub portion of it. 
