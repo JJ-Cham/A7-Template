@@ -17,17 +17,17 @@ _**YES**____ 1 pt: Implements containsWord method as specified
 
 _____ 5 pts: Implements nearMisses method as specified, composed of:
 
-      _____ 1 pt: Suggests correct deletions
+      __**YES**___ 1 pt: Suggests correct deletions
 
-      _____ 1 pt: Suggests correct insertions
+      __**YES**___ 1 pt: Suggests correct insertions
 
-      _____ 1 pt: Suggests correct substitutions
+      __**YES**___ 1 pt: Suggests correct substitutions
 
-      _____ 1 pt: Suggests correct transpositions
+      ___**YES**__ 1 pt: Suggests correct transpositions
 
-      _____ 1 pt: Suggests correct split words
+      __**YES**___ 1 pt: Suggests correct split words
 
-_____ 1 pt: Main includes multiple tests for each point listed above
+__**YES**___ 1 pt: Main includes multiple tests for each point listed above
 
 _____ 1 pt: SpellChecker runs in command line mode as described
 
