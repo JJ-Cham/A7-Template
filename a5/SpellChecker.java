@@ -1,8 +1,18 @@
-
+package a5;
 
 import java.util.*;
 
+/**
+ * The SpellChecker class uses WordValidation to check spelling.
+ * It can check words given on the command line or read from standard input.
+ */
 public class SpellChecker {
+
+    /**
+     * Main method that runs the spell checker.
+     *
+     * @param args optional words to check from the command line
+     */
     public static void main(String[] args) {
         WordValidation validator = new WordValidation("words.txt");
 
@@ -23,7 +33,7 @@ public class SpellChecker {
                 }
             }
         } else {
-            // File scanning mode
+            // Input mode
             Scanner scanner = new Scanner(System.in);
             HashSet<String> checked = new HashSet<>();
 
@@ -38,9 +48,9 @@ public class SpellChecker {
                     } else {
                         System.out.println("  No suggestions found.");
                     }
-            scanner.close();
                 }
             }
+            scanner.close();
         }
     }
 }
