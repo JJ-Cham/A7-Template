@@ -29,9 +29,9 @@ _____ 5 pts: Implements nearMisses method as specified, composed of:
 
 __**YES**___ 1 pt: Main includes multiple tests for each point listed above
 
-_____ 1 pt: SpellChecker runs in command line mode as described
+__**YES**___ 1 pt: SpellChecker runs in command line mode as described
 
-_____ 1 pt: SpellChecker runs in file checking mode as described
+___**YES**__ 1 pt: SpellChecker runs in file checking mode as described
 
 (Note that in addition to the tests that you write, we will perform automated testing of our own on your submitted code.)
 
@@ -39,22 +39,22 @@ _____ 1 pt: SpellChecker runs in file checking mode as described
 
 ## General Items:
 
-_____ 4 pts: Programs compile without errors or warnings
+__**YES**___ 4 pts: Programs compile without errors or warnings
 
-_____ 2 pts: Executes fully & consistently without crashing (exception/freeze)
+___**YES**__ 2 pts: Executes fully & consistently without crashing (exception/freeze)
 
-_____ 2 pt: Complies with style guidelines (missing items 1 pt each):
+_**YES**____ 2 pt: Complies with style guidelines (missing items 1 pt each):
 
-      _____ Classes & class members all have Javadoc header comments
+      ___**YES**__ Classes & class members all have Javadoc header comments
 
-      _____ Clear and consistent indentation of bracketed sections
+      __**YES**___ Clear and consistent indentation of bracketed sections
 
-      _____ Adheres to Java conventions on naming & capitalization
+      _**YES**____ Adheres to Java conventions on naming & capitalization
 
-      _____ Methods & variables all have clear and accurate names
+      ___**YES**__ Methods & variables all have clear and accurate names
 
-      _____ Methods avoid confusing side effects
+      __**YES**___ Methods avoid confusing side effects
 
-_____ 1 pt: All required files included with submission (including completed checklist file)
+_**YES**____ 1 pt: All required files included with submission (including completed checklist file)
 
-_____ 1 pt: readme.md contains your reflection on the assignment
+___**YES**__ 1 pt: readme.md contains your reflection on the assignment

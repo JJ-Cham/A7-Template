@@ -1,56 +1,46 @@
-import java.io.*;
+//package a5;
+
 import java.util.*;
 
 public class SpellChecker {
-
     public static void main(String[] args) {
         WordValidation validator = new WordValidation("words.txt");
 
         if (args.length > 0) {
-            // Mode 1: words provided as command-line arguments
-            checkWordsFromArgs(args, validator);
-        } else {
-            // Mode 2: words provided from a file via input redirection
-            checkWordsFromFile(validator);
-        }
-    }
-
-    private static void checkWordsFromArgs(String[] args, WordValidation validator) {
-        for (String word : args) {
-            if (validator.containsWord(word)) {
-                System.out.println("'" + word + "' is spelled correctly.");
-            } else {
-                System.out.println("Not found:  " + word);
-                System.out.print("  Suggestions:  ");
-                ArrayList<String> suggestions = validator.nearMisses(word);
-                for (String s : suggestions) {
-                    System.out.print(s + " ");
-                }
-                System.out.println();
-            }
-        }
-    }
-
-    private static void checkWordsFromFile(WordValidation validator) {
-        Scanner input = new Scanner(System.in);
-        HashSet<String> misspelled = new HashSet<>();
-
-        while (input.hasNext()) {
-            String word = input.next().replaceAll("[^a-zA-Z]", "");
-            if (!word.isEmpty() && !validator.containsWord(word)) {
-                if (!misspelled.contains(word)) {
-                    misspelled.add(word);
+            // Command-line mode
+            for (String raw : args) {
+                String word = raw.toLowerCase().replaceAll("[^a-z]", "");
+                if (validator.containsWord(word)) {
+                    System.out.println("'" + word + "' is spelled correctly.");
+                } else {
                     System.out.println("Not found: " + word);
-                    System.out.print("  Suggestions: ");
                     ArrayList<String> suggestions = validator.nearMisses(word);
-                    for (String s : suggestions) {
-                        System.out.print(s + " ");
+                    if (!suggestions.isEmpty()) {
+                        System.out.println("  Suggestions: " + String.join(" ", suggestions));
+                    } else {
+                        System.out.println("  No suggestions found.");
                     }
-                    System.out.println();
+                }
+            }
+        } else {
+            // File scanning mode
+            Scanner scanner = new Scanner(System.in);
+            HashSet<String> checked = new HashSet<>();
+
+            while (scanner.hasNext()) {
+                String word = scanner.next().toLowerCase().replaceAll("[^a-z]", "");
+                if (!validator.containsWord(word) && !checked.contains(word)) {
+                    checked.add(word);
+                    System.out.println("Not found: " + word);
+                    ArrayList<String> suggestions = validator.nearMisses(word);
+                    if (!suggestions.isEmpty()) {
+                        System.out.println("  Suggestions: " + String.join(" ", suggestions));
+                    } else {
+                        System.out.println("  No suggestions found.");
+                    }
+            scanner.close();
                 }
             }
         }
-
-        input.close();
     }
 }
