@@ -2,94 +2,115 @@
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Scanner;
 
+/**
+ * WordValidation implements the SpellingOperations interface.
+ * It loads a list of valid words into a HashSet and provides methods
+ * to check if a word is valid and to generate near-miss suggestions.
+ */
 public class WordValidation implements SpellingOperations {
+
     private HashSet<String> dictionary;
 
+    /**
+     * Constructor: builds a dictionary HashSet from the given filename.
+     * @param filename The name of the file containing valid words.
+     */
     public WordValidation(String filename) {
         dictionary = new HashSet<>();
-        try (Scanner scanner = new Scanner(new File(filename))) {
-            while (scanner.hasNext()) {
-                String word = scanner.next().toLowerCase().replaceAll("[^a-z]", "");
+        try (Scanner file = new Scanner(new File(filename))) {
+            while (file.hasNext()) {
+                String word = file.next().toLowerCase().replaceAll("[^a-z]", "");
                 if (!word.isEmpty()) {
                     dictionary.add(word);
                 }
             }
         } catch (FileNotFoundException e) {
-            System.err.println("Dictionary file not found: " + filename);
+            System.err.println("Error: Cannot open dictionary file: " + filename);
+            System.exit(1);
         }
     }
 
+    /**
+     * Checks if a word is in the dictionary.
+     */
     @Override
     public boolean containsWord(String query) {
+        if (query == null) return false;
         return dictionary.contains(query.toLowerCase());
     }
 
+    /**
+     * Returns a list of all valid dictionary words that are one edit away
+     * (deletion, insertion, substitution, transposition, or split).
+     */
     @Override
     public ArrayList<String> nearMisses(String query) {
-        query = query.toLowerCase();
-        HashSet<String> suggestions = new HashSet<>();
+        HashSet<String> results = new HashSet<>();
+        if (query == null || query.isEmpty()) return new ArrayList<>(results);
 
-        // Deletions
-        for (int i = 0; i < query.length(); i++) {
+        query = query.toLowerCase();
+        int n = query.length();
+
+        // 1. Deletions
+        for (int i = 0; i < n; i++) {
             String candidate = query.substring(0, i) + query.substring(i + 1);
-            if (dictionary.contains(candidate)) suggestions.add(candidate);
+            if (dictionary.contains(candidate)) results.add(candidate);
         }
 
-        // Insertions
-        for (int i = 0; i <= query.length(); i++) {
+        // 2. Insertions
+        for (int i = 0; i <= n; i++) {
             for (char c = 'a'; c <= 'z'; c++) {
                 String candidate = query.substring(0, i) + c + query.substring(i);
-                if (dictionary.contains(candidate)) suggestions.add(candidate);
+                if (dictionary.contains(candidate)) results.add(candidate);
             }
         }
 
-        // Substitutions
-        for (int i = 0; i < query.length(); i++) {
+        // 3. Substitutions
+        for (int i = 0; i < n; i++) {
             for (char c = 'a'; c <= 'z'; c++) {
-                if (c != query.charAt(i)) {
-                    String candidate = query.substring(0, i) + c + query.substring(i + 1);
-                    if (dictionary.contains(candidate)) suggestions.add(candidate);
-                }
+                if (query.charAt(i) == c) continue;
+                String candidate = query.substring(0, i) + c + query.substring(i + 1);
+                if (dictionary.contains(candidate)) results.add(candidate);
             }
         }
 
-        // Transpositions
-        for (int i = 0; i < query.length() - 1; i++) {
-            char[] chars = query.toCharArray();
-            char temp = chars[i];
-            chars[i] = chars[i + 1];
-            chars[i + 1] = temp;
-            String candidate = new String(chars);
-            if (dictionary.contains(candidate)) suggestions.add(candidate);
-        }
-
-        // Splits
-        for (int i = 1; i < query.length(); i++) {
-            String first = query.substring(0, i);
-            String second = query.substring(i);
-            if (dictionary.contains(first) && dictionary.contains(second)) {
-                suggestions.add(first + " " + second);
+        // 4. Transpositions
+        for (int i = 0; i < n - 1; i++) {
+            if (query.charAt(i) != query.charAt(i + 1)) {
+                String candidate = query.substring(0, i)
+                        + query.charAt(i + 1)
+                        + query.charAt(i)
+                        + query.substring(i + 2);
+                if (dictionary.contains(candidate)) results.add(candidate);
             }
         }
 
-        return new ArrayList<>(suggestions);
+        // 5. Splits (two valid words)
+        for (int i = 1; i < n; i++) {
+            String left = query.substring(0, i);
+            String right = query.substring(i);
+            if (dictionary.contains(left) && dictionary.contains(right)) {
+                results.add(left + " " + right);
+            }
+        }
+
+        return new ArrayList<>(results);
     }
+
  
-    
     public static void main(String[] args) {
-        WordValidation validator = new WordValidation("words.txt");
+        WordValidation wv = new WordValidation("words.txt");
 
-        System.out.println("Test containsWord: " + validator.containsWord("cattle")); // true
-
-        System.out.println("Deletions: " + validator.nearMisses("catttle")); // should include "cattle"
-        System.out.println("Insertions: " + validator.nearMisses("catle")); // should include "cattle"
-        System.out.println("Substitutions: " + validator.nearMisses("caxtle")); // should include "cattle"
-        System.out.println("Transpositions: " + validator.nearMisses("cattel")); // should include "cattle"
-        System.out.println("Splits: " + validator.nearMisses("cattell")); // should include "cat tell"
+        String testWord = "caxtle"; // intentional typo for "cattle"
+        System.out.println("Contains 'castle'? " + wv.containsWord("castle"));
+        System.out.println("Suggestions for '" + testWord + "': " + wv.nearMisses(testWord));
     }
 }
+
 
 
 
